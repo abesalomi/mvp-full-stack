@@ -1,0 +1,17 @@
+{
+  "name": "mvp-full-stack",
+  "private": true,
+  "workspaces": [
+    "api"
+  ],
+  "scripts": {
+    "start:api": "yarn workspace api start:dev",
+    "start": "concurrently yarn:start:api"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
