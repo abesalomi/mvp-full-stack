@@ -1,5 +1,5 @@
 GET http://localhost:5000/api/users
-
+Authorization: bearer {{token}}
 
 ###
 POST http://localhost:5000/api/users
@@ -10,5 +10,6 @@ Content-Type: application/json
   "firstName":  "Abesalomi",
   "lastName": "Gogatishvili",
   "password":  "abesalomi",
-  "roles": ["ADMIN"]
+  "roles": ["SELLER"]
 }
+

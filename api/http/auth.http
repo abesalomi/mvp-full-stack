@@ -2,6 +2,16 @@ POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "gg",
-  "password": "sf"
+  "username": "abesalomi",
+  "password": "abesalomi"
 }
+
+
+> {%
+    client.global.set("token", response.body['access_token']);
+%}
+
+
+###
+GET http://localhost:5000/api/auth/profile
+Authorization: bearer {{token}}
