@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { User } from './entity/user.entity';
+import { getManager, Repository } from 'typeorm';
+import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
+import { UserUpdateDao } from './dao/user-update.dao';
 
 @Injectable()
 export class UserService {
@@ -29,5 +30,32 @@ export class UserService {
     return this.userRepository.findOne({
       username,
     });
+  }
+
+  async findById(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
+  }
+
+  async delete(id: number) {
+    return this.userRepository.delete({
+      id
+    })
+  }
+
+  async deposit(amount: number, id: number) {
+    await getManager().transaction(async manager => {
+      const user = await manager.findOne(User, id);
+      user.deposit += amount;
+      await manager.save(user);
+    });
+    return this.userRepository.findOne(id);
+  }
+
+  async update(id: number, updateDao: UserUpdateDao) {
+    const user = await this.userRepository.findOne(id);
+    user.firstName = updateDao.firstName || user.firstName;
+    user.lastName = updateDao.lastName || user.lastName;
+    return await this.userRepository.save(user);
+
   }
 }

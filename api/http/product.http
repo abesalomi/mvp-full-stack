@@ -1,0 +1,14 @@
+GET http://localhost:5000/api/products
+Authorization: bearer {{token}}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "productName": "Kitkat",
+  "amountAvailable": 20,
+  "cost": 5
+}
+

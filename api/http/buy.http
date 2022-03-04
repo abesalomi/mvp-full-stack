@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/products/buy
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "productId": 3,
+  "amount": 2
+}
