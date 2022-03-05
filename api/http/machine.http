@@ -1,0 +1,32 @@
+POST http://localhost:5000/api/machine/reset
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+POST http://localhost:5000/api/machine/deposit
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "amount": 6
+}
+
+###
+POST http://localhost:5000/api/machine/deposit
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "amount": 100
+}
+
+###
+POST http://localhost:5000/api/machine/buy
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "productId": 3,
+  "amount": 2
+}
+

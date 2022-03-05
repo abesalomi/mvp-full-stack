@@ -14,11 +14,7 @@ import {
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { DepositDao } from './dao/deposit.dao';
 import { UserUpdateDao } from './dao/user-update.dao';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/roles.decorator';
-import { Role } from './role';
 
 @Controller('/users')
 export class UserController {
@@ -52,14 +48,6 @@ export class UserController {
     }
 
     return this.userService.delete(userId);
-  }
-
-  @Post('/deposit')
-  @Roles(Role.BUYER)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  // @UsePipes(new ValidationPipe({transform: true}))
-  async deposit(@Body() deposit: DepositDao, @Request() req) {
-    return this.userService.deposit(deposit.amount, req.user.id);
   }
 
 

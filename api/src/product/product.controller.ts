@@ -5,7 +5,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../user/role';
-import { BuyRequestDao } from './dao/buy-request.dao';
 
 @Controller('/products')
 export class ProductController {
@@ -26,11 +25,5 @@ export class ProductController {
     return await this.service.create(product, req.user);
   }
 
-  @Post('/buy')
-  @Roles(Role.BUYER)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  async buy(@Body() buyReq: BuyRequestDao, @Request() req) {
-    return this.service.buy(req.user.id, buyReq);
-  }
 
 }
