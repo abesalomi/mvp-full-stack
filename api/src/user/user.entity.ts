@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedCol
 import { Role } from './role';
 import { Product } from '../product/product.entity';
 import { Exclude } from 'class-transformer';
+import { ArrayMaxSize, ArrayMinSize, MinLength } from 'class-validator';
 
 @Entity()
 export class User {
@@ -11,16 +12,12 @@ export class User {
 
   @Index({unique: true})
   @Column()
+  @MinLength(4)
   username: string;
 
   @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column()
   @Exclude({toPlainOnly: true})
+  @MinLength(8)
   password: string;
 
   @Column('float', {default: 0})
@@ -37,6 +34,8 @@ export class User {
     array: true,
     enum: Role,
   })
+  @ArrayMaxSize(1, {message: 'You should select 1 role.'})
+  @ArrayMinSize(1, {message: 'You should select 1 role.'})
   roles: Set<Role>;
 
   @OneToMany(type => Product, product => product.user)

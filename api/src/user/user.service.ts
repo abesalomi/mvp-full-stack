@@ -44,8 +44,7 @@ export class UserService {
 
   async update(id: number, updateDao: UserUpdateDao) {
     const user = await this.userRepository.findOne(id);
-    user.firstName = updateDao.firstName || user.firstName;
-    user.lastName = updateDao.lastName || user.lastName;
+    // TODO implement
     return await this.userRepository.save(user);
 
   }

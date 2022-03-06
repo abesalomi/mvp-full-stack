@@ -1,5 +1,7 @@
 import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
+import { Min, MinLength, Validate } from 'class-validator';
+import { CostValidator } from './validator/cost.validator';
 
 @Entity()
 export class Product {
@@ -9,12 +11,15 @@ export class Product {
 
   @Index({unique: true})
   @Column()
+  @MinLength(2)
   productName: string;
 
   @Column({default: 0})
+  @Min(0)
   amountAvailable: number;
 
   @Column({type: 'float'})
+  @Validate(CostValidator)
   cost: number;
 
   @CreateDateColumn({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
@@ -27,3 +32,4 @@ export class Product {
   user: User;
 
 }
+

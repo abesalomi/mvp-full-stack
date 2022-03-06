@@ -7,7 +7,7 @@ Content-Type: application/json
 Authorization: bearer {{token}}
 
 {
-  "productName": "Kitkat",
+  "productName": "Kitkat 111",
   "amountAvailable": 20,
   "cost": 5
 }

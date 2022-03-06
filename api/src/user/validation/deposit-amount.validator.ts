@@ -1,6 +1,7 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 
 const ALLOWED_DEPOSIT = [5, 10, 20, 50, 100];
+
 @ValidatorConstraint({name: 'deposit', async: false})
 export class DepositAmountValidator implements ValidatorConstraintInterface {
 

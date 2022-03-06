@@ -2,11 +2,13 @@
   "name": "mvp-full-stack",
   "private": true,
   "workspaces": [
-    "api"
+    "api",
+    "web"
   ],
   "scripts": {
     "start:api": "yarn workspace api start:dev",
-    "start": "concurrently yarn:start:api"
+    "start:web": "yarn workspace web start",
+    "start": "concurrently yarn:start:api yarn:start:web"
   },
   "version": "1.0.0",
   "main": "index.js",
