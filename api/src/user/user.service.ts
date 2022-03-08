@@ -4,6 +4,8 @@ import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { UserUpdateDao } from './dao/user-update.dao';
 
+const salt = bcrypt.genSaltSync(10);
+
 @Injectable()
 export class UserService {
   constructor(
@@ -17,12 +19,11 @@ export class UserService {
 
   async create(user: User): Promise<User> {
 
-    const salt = bcrypt.genSaltSync(10);
     const password = await bcrypt.hash(user.password, salt);
 
     return this.userRepository.save({
       ...user,
-      password
+      password,
     });
   }
 
@@ -38,13 +39,21 @@ export class UserService {
 
   async delete(id: number) {
     return this.userRepository.delete({
-      id
+      id,
     })
   }
 
   async update(id: number, updateDao: UserUpdateDao) {
     const user = await this.userRepository.findOne(id);
-    // TODO implement
+
+    if (updateDao.username) {
+      user.username = updateDao.username;
+    }
+
+    if (updateDao.password) {
+      user.password = await bcrypt.hash(updateDao.password, salt);
+    }
+
     return await this.userRepository.save(user);
 
   }

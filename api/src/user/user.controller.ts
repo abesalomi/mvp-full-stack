@@ -5,9 +5,8 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Param,
+  Param, Patch,
   Post,
-  Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -32,7 +31,7 @@ export class UserController {
     return this.userService.create(user);
   }
 
-  @Put()
+  @Patch()
   @UseGuards(JwtAuthGuard)
   update(@Body() updateDao: UserUpdateDao, @Request() req) {
     return this.userService.update(req.user.id, updateDao);

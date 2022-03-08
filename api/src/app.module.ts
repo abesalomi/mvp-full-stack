@@ -8,7 +8,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MachineModule } from './machine/machine.module';
 
 @Module({
-  imports: [UserModule, AuthModule, ProductModule, MachineModule],
+  imports: [
+    UserModule,
+    AuthModule,
+    ProductModule,
+    MachineModule
+],
   controllers: [
     AppController
   ],

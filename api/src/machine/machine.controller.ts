@@ -1,11 +1,11 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
 import { MachineService } from './machine.service';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../user/role';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { BuyRequestDao } from '../product/dao/buy-request.dao';
-import { DepositDao } from '../user/dao/deposit.dao';
+import { BuyRequestDao } from './dao/buy-request.dao';
+import { DepositDao } from './dao/deposit.dao';
 
 @Controller('/machine')
 export class MachineController {
@@ -14,6 +14,7 @@ export class MachineController {
   }
 
 
+  @HttpCode(200)
   @Post('/buy')
   @Roles(Role.BUYER)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -22,20 +23,30 @@ export class MachineController {
   }
 
 
+  @Get('/deposit')
+  @Roles(Role.BUYER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async getDeposit(@Request() req) {
+    return this.service.getDeposit(req.user.id);
+  }
+
+
+
+  @HttpCode(200)
   @Post('/deposit')
   @Roles(Role.BUYER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async deposit(@Body() deposit: DepositDao, @Request() req) {
-    return this.service.deposit(deposit.amount, req.user.id);
+    return this.service.addDeposit(deposit.deposit, req.user.id);
   }
 
 
+  @HttpCode(200)
   @Post('/reset')
   @Roles(Role.BUYER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async reset(@Request() req) {
     return this.service.reset(req.user.id);
   }
-
 
 }

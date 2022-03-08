@@ -6,8 +6,8 @@ POST http://localhost:5000/api/users
 Content-Type: application/json
 
 {
-  "username": "abesa",
-  "password":  "ab",
+  "username": "abesalomi",
+  "password":  "abesalomi",
   "deposit": 0,
   "roles": ["SELLER"]
 }
@@ -22,11 +22,10 @@ Authorization: bearer {{token}}
 
 
 ###
-PUT http://localhost:5000/api/users
+PATCH http://localhost:5000/api/users
 Content-Type: application/json
 Authorization: bearer {{token}}
 
 {
-  "firstName": "NewFirstName",
-  "lastName": "NewLastName"
+  "password": "abesalomi1"
 }

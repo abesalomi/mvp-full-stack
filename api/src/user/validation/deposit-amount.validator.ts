@@ -1,6 +1,7 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { ALLOWED_CHANGE } from '../../constants/change.constant';
 
-const ALLOWED_DEPOSIT = [5, 10, 20, 50, 100];
+
 
 @ValidatorConstraint({name: 'deposit', async: false})
 export class DepositAmountValidator implements ValidatorConstraintInterface {
@@ -9,8 +10,8 @@ export class DepositAmountValidator implements ValidatorConstraintInterface {
   private allowedAmountsStr: string;
 
   constructor() {
-    this.allowedAmountsSet = new Set(ALLOWED_DEPOSIT);
-    this.allowedAmountsStr = ALLOWED_DEPOSIT.join();
+    this.allowedAmountsSet = new Set(ALLOWED_CHANGE);
+    this.allowedAmountsStr = ALLOWED_CHANGE.join();
   }
 
   validate(deposit: number, args: ValidationArguments) {

@@ -1,0 +1,4 @@
+
+interface DepositResponseDao {
+  deposit: number;
+}

@@ -1,14 +1,13 @@
-import { MinLength } from 'class-validator';
+import { IsOptional, MinLength } from 'class-validator';
 
 
 export class UserUpdateDao {
-  @MinLength(2, {
-    message: 'First name should be longer then 2'
-  })
-  firstName: string;
+  @IsOptional()
+  @MinLength(4)
+  username?: string;
 
-  @MinLength(2, {
-    message: 'Last name should be longer then 2'
-  })
-  lastName: string
+
+  @IsOptional()
+  @MinLength(8)
+  password?: string
 }
