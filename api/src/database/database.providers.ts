@@ -7,12 +7,12 @@ export const databaseProviders = [
             return await createConnection({
                 type: 'postgres',
                 host: process.env.DB_HOST || 'localhost',
-                port: process.env.DB_PORT ? parseInt(process.env.DB_PORT ) : 5432,
+                port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
                 database: process.env.DB_DATABASE || 'task',
                 username: process.env.DB_USERNAME || 'task',
                 password: process.env.DB_PASSWORD || 'task',
                 entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-                synchronize: true,
+                synchronize: JSON.parse(process.env.DB_SYNCHRONIZE || 'false'),
             })
         },
     },

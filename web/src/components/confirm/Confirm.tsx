@@ -6,9 +6,10 @@ interface Props {
   onClose: () => void;
   show?: boolean;
   closeOnOk?: boolean;
+  disabledOk?: boolean;
 }
 
-const Confirm = ({children, onClose, onConfirm, show, closeOnOk = true}: Props) => {
+const Confirm = ({children, onClose, onConfirm, show, closeOnOk = true, disabledOk = false}: Props) => {
 
   const handleClose = () => {
     onClose()
@@ -16,7 +17,7 @@ const Confirm = ({children, onClose, onConfirm, show, closeOnOk = true}: Props) 
 
   const handleOk = () => {
     onConfirm();
-    if(closeOnOk) {
+    if (closeOnOk) {
       onClose();
     }
   }
@@ -31,7 +32,7 @@ const Confirm = ({children, onClose, onConfirm, show, closeOnOk = true}: Props) 
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleOk}>
+        <Button disabled={disabledOk} variant="primary" onClick={handleOk}>
           Ok
         </Button>
       </Modal.Footer>

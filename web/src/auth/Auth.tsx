@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import { setBearer } from '../services/http';
-import { httpGetUser, httpLogin } from '../services/auth';
+import { httpGetUser, httpLogin, httpLogout } from '../services/auth';
 import { LoginCredentials } from '../model/login';
 import { AuthUser } from '../model/auth';
 
@@ -35,7 +35,7 @@ export const AuthProvider = ({children}: { children?: ReactNode | undefined }) =
   const [loading, setLoading] = useState<boolean>(true);
   const [token, setToken, clearToken] = useLocalStorage<string | undefined>('accessToken');
 
-  const doLogin = (credentials: LoginCredentials, callback?: VoidFunction) => {
+  const login = (credentials: LoginCredentials, callback?: VoidFunction) => {
     httpLogin(credentials).then(({access_token: accessToken}) => {
       setToken(accessToken);
       callback?.();
@@ -49,27 +49,34 @@ export const AuthProvider = ({children}: { children?: ReactNode | undefined }) =
     setLoading(true);
     setBearer(token);
     if (!token) {
-      doLogout();
+      setLoading(false);
+      setUser(undefined);
+      setToken(undefined);
       return;
     }
     httpGetUser().then((user) => {
       setUser(user);
       setLoading(false);
     }).catch(() => {
-      doLogout();
+      setLoading(false);
+      setUser(undefined);
+      setToken(undefined);
     });
   }, [token]);
 
-  const doLogout = () => {
-    setLoading(false);
-    clearToken();
-    setUser(undefined);
-    setToken(undefined);
+
+  const logout = () => {
+    httpLogout().then(() =>{
+      setLoading(false);
+      clearToken();
+      setUser(undefined);
+      setToken(undefined);
+    })
   };
 
   const value = {
-    login: doLogin,
-    logout: doLogout,
+    login,
+    logout,
     loginError,
     user,
     token,

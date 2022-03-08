@@ -63,7 +63,6 @@ export const depositSlice = createSlice({
     builder
       .addCase(getDeposit.fulfilled, (state: DepositState, action) => {
         state.loading = false;
-        console.log(action.payload)
         state.deposit = action.payload.deposit
       })
       .addCase(getDeposit.pending, (state: DepositState) => {
@@ -111,6 +110,7 @@ export const {
 } = depositSlice.actions
 
 export const selectDeposit = (state: RootState) => state.deposit.deposit;
+export const selectDepositLoading = (state: RootState) => state.deposit.loading;
 export const selectDepositErrors = (state: RootState) => ({
   isError: state.deposit.isError,
   errorMessages: state.deposit.errorMessages

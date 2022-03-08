@@ -25,7 +25,6 @@ describe('MachineController', () => {
   let app: INestApplication;
   let controller: MachineController;
   let auth: AuthService;
-  let token: string;
   let user: User;
   let seller: User;
   let products: Products;
@@ -53,10 +52,6 @@ describe('MachineController', () => {
 
     controller = module.get<MachineController>(MachineController);
     auth = module.get<AuthService>(AuthService);
-
-
-
-    token = (await auth.login(user)).access_token;
 
     app = module.createNestApplication();
     app.useGlobalPipes(

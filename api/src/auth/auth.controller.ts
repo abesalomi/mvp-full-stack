@@ -22,4 +22,21 @@ export class AuthController {
     return req.user;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('/active-sessions')
+  getActiveSession(@Request() req) {
+    return this.authService.getActiveSession(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/logout')
+  logout(@Request() req) {
+    return this.authService.invalidateSession(req.user.sessionId)
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('/logout-all')
+  invalidateAllExcept(@Request() req) {
+    return this.authService.invalidateAllExcept(req.user.id, req.user.sessionId)
+  }
+
 }

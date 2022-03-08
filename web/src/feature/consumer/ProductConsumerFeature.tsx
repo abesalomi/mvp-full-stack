@@ -5,11 +5,12 @@ import {
   clearBuyStateError,
   getProductForConsumer,
   selectBuyState,
-  selectProductForConsumer,
+  selectProductForConsumer, selectProductLoadingForConsumer,
 } from './productConsumerSlice';
 import ProductConsumerShelf from '../../components/product/ProductConsumerShelf';
 import { Product } from '../../model/product';
 import Confirm from '../../components/confirm/Confirm';
+import { Alert } from 'react-bootstrap';
 
 
 type ConfirmBy = {
@@ -22,10 +23,11 @@ interface Props {
   onBuy?: () => void
 }
 
-const ProductConsumer = ({availableDeposit = Infinity, onBuy}: Props) => {
+const ProductConsumerFeature = ({availableDeposit = Infinity, onBuy}: Props) => {
 
   const dispatch = useAppDispatch()
   const products = useAppSelector(selectProductForConsumer);
+  const isLoading = useAppSelector(selectProductLoadingForConsumer);
   const buyState = useAppSelector(selectBuyState);
   const [confirmBuy, setConfirmBuy] = useState<ConfirmBy>(null);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
@@ -64,11 +66,12 @@ const ProductConsumer = ({availableDeposit = Infinity, onBuy}: Props) => {
   };
   return (
     <>
+      {isLoading && <Alert variant="warning">Loading...</Alert>}
       <ProductConsumerShelf deposit={availableDeposit} onBuy={handleBuy} products={products}/>
 
       {
         confirmBuy &&
-        <Confirm closeOnOk={false} onConfirm={handleConfirm} onClose={onConfirmClose}>
+        <Confirm disabledOk={buyState.loading} closeOnOk={false} onConfirm={handleConfirm} onClose={onConfirmClose}>
           <p> You are buying <span className="fw-bolder">{confirmBuy.amount}</span> {confirmBuy.product.productName}</p>
           <p> and you will be charged with <span
             className="fw-bolder">{confirmBuy.amount * confirmBuy.product.cost}</span> cents.</p>
@@ -86,4 +89,4 @@ const ProductConsumer = ({availableDeposit = Infinity, onBuy}: Props) => {
   )
 }
 
-export default ProductConsumer;
+export default ProductConsumerFeature;

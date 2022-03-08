@@ -9,6 +9,6 @@ Authorization: bearer {{token}}
 {
   "productName": "Kitkat",
   "amountAvailable": 20,
-  "cost": 5
+  "cost": 4
 }
 

@@ -6,3 +6,14 @@ export interface AuthUser {
   username: string;
   roles: AuthRole[];
 }
+
+
+export interface UserSessions {
+  sessionId: string;
+  expiresAt: Date;
+}
+
+export interface ActiveSessionsResponse {
+  count: number;
+  sessions: UserSessions[]
+}

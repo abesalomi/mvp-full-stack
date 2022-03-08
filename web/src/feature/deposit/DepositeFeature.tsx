@@ -1,6 +1,13 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useEffect, useState } from 'react';
-import { addDeposit, getDeposit, resetDeposit, selectDeposit, selectDepositErrors } from './depositSlice';
+import {
+  addDeposit,
+  getDeposit,
+  resetDeposit,
+  selectDeposit,
+  selectDepositErrors,
+  selectDepositLoading,
+} from './depositSlice';
 import { Alert, Button, Col, Row } from 'react-bootstrap';
 import Confirm from '../../components/confirm/Confirm';
 
@@ -11,6 +18,7 @@ const DepositFeature = () => {
   const dispatch = useAppDispatch();
   const deposit = useAppSelector(selectDeposit);
   const {isError, errorMessages} = useAppSelector(selectDepositErrors);
+  const isLoading = useAppSelector(selectDepositLoading);
 
   const [confirmDeposit, setConfirmDeposit] = useState<number | null>(null);
   const [confirmReset, setConfirmReset] = useState<boolean>(false);
@@ -22,13 +30,16 @@ const DepositFeature = () => {
   return (
     <>
       {
-        (isError) && <Alert variant={'danger'} >
-            <ul>
-              {
-                errorMessages.map(e=> <li>{e}</li>)
-              }
-            </ul>
+        (isError) && <Alert variant={'danger'}>
+          <ul>
+            {
+              errorMessages.map(e => <li>{e}</li>)
+            }
+          </ul>
         </Alert>
+      }
+      {
+        (isLoading) && <Alert variant={'warning'}>loading...</Alert>
       }
       <Row>
         <Col className="w-100 bg-light text-center" xs={12}>
@@ -37,7 +48,7 @@ const DepositFeature = () => {
 
         {
           ALLOWED_DEPOSIT.map(amount => (
-            <Col  className="p-2" key={amount} xs={2} lg={12}>
+            <Col className="p-2" key={amount} xs={2} lg={12}>
               <Button className="w-100 p-4" onClick={() => setConfirmDeposit(amount)}>
                 Add <br className="d-lg-none"/> {amount}
               </Button>
@@ -47,7 +58,8 @@ const DepositFeature = () => {
         }
 
         <Col className="p-2" xs={2} lg={12}>
-          <Button disabled={!deposit} variant="danger" className="w-100 h-100 p-4" onClick={() => setConfirmReset(true)}>
+          <Button disabled={!deposit} variant="danger" className="w-100 h-100 p-4"
+                  onClick={() => setConfirmReset(true)}>
             Reset
           </Button>
         </Col>
@@ -56,7 +68,9 @@ const DepositFeature = () => {
 
       {
         confirmDeposit && (
-          <Confirm onConfirm={() => { dispatch(addDeposit(confirmDeposit)) }} onClose={() => setConfirmDeposit(null)}>
+          <Confirm onConfirm={() => {
+            dispatch(addDeposit(confirmDeposit))
+          }} onClose={() => setConfirmDeposit(null)}>
             Adding <span className="fw-bold">{confirmDeposit}</span> to your deposit.
           </Confirm>
         )
@@ -64,7 +78,9 @@ const DepositFeature = () => {
 
       {
         confirmReset && (
-          <Confirm onConfirm={() => { dispatch(resetDeposit()) }} onClose={() => setConfirmReset(false)}>
+          <Confirm onConfirm={() => {
+            dispatch(resetDeposit())
+          }} onClose={() => setConfirmReset(false)}>
             You are resetting your deposit.
           </Confirm>
         )

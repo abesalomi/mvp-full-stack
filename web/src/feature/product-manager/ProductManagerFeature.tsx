@@ -23,7 +23,7 @@ import ProductCard from '../../components/product/ProductCard';
 import ProductEditModal from '../../components/product/ProductEditModal';
 import ProductAddModal from '../../components/product/ProductAddModal';
 
-const ProductManager = () => {
+const ProductManagerFeature = () => {
 
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectProductForManager);
@@ -116,4 +116,4 @@ const ProductManager = () => {
   );
 }
 
-export default ProductManager;
+export default ProductManagerFeature;
