@@ -18,7 +18,7 @@ export class Product {
   @Min(0)
   amountAvailable: number;
 
-  @Column({type: 'float'})
+  @Column({type: 'integer'})
   @Validate(CostValidator)
   cost: number;
 

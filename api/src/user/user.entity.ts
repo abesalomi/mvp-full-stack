@@ -20,7 +20,7 @@ export class User {
   @MinLength(8)
   password: string;
 
-  @Column('float', {default: 0})
+  @Column('integer', {default: 0})
   deposit: number;
 
   @CreateDateColumn({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
