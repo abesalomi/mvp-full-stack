@@ -58,9 +58,10 @@ export const AuthProvider = ({children}: { children?: ReactNode | undefined }) =
       setUser(user);
       setLoading(false);
     }).catch(() => {
+      clearToken();
+      setToken(undefined);
       setLoading(false);
       setUser(undefined);
-      setToken(undefined);
     });
   }, [token]);
 
