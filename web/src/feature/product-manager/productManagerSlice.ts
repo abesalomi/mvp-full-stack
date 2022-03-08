@@ -190,9 +190,9 @@ export const {
   closeProductAddModal
 } = productManagerSlice.actions
 
-export const selectProduct = (state: RootState) => state.productManager.products;
-export const selectProductLoading = (state: RootState) => state.productManager.loading;
-export const selectProductError = (state: RootState) => state.productManager.isError;
+export const selectProductForManager = (state: RootState) => state.productManager.products;
+export const selectProductLoadingForManager = (state: RootState) => state.productManager.loading;
+export const selectProductErrorForManager = (state: RootState) => state.productManager.isError;
 export const selectProductDeleteState = (state: RootState) => state.productManager.delete;
 export const selectProductEditState = (state: RootState) => state.productManager.edit;
 export const selectProductAddState = (state: RootState) => state.productManager.add;

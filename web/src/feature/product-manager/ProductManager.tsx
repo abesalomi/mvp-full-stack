@@ -11,7 +11,7 @@ import {
   editProduct,
   getProductForSeller,
   openProductEditModal,
-  selectProduct,
+  selectProductForManager,
   selectProductAddState,
   selectProductDeleteState,
   selectProductEditState,
@@ -26,7 +26,7 @@ import ProductAddModal from '../../components/product/ProductAddModal';
 const ProductManager = () => {
 
   const dispatch = useAppDispatch();
-  const products = useAppSelector(selectProduct);
+  const products = useAppSelector(selectProductForManager);
   const deleteState = useAppSelector(selectProductDeleteState);
   const editState = useAppSelector(selectProductEditState);
   const addState = useAppSelector(selectProductAddState);
@@ -92,17 +92,26 @@ const ProductManager = () => {
           </Confirm>
         )
       }
-      {editState.product && <ProductEditModal errors={editState.errorMessage} product={editState.product}
-                                              onEdit={(updatedProduct, productId) => {
-                                                dispatch(editProduct({
-                                                  product: updatedProduct,
-                                                  productId: productId,
-                                                }))
-                                              }}
-                                              onClose={() => dispatch(closeProductEditModal())}/>}
-      {addState.showModal && <ProductAddModal errors={addState.errorMessage}
-                             onAdd={(product) => dispatch(addProduct(product))}
-                             onClose={() => dispatch(closeProductAddModal())} show={addState.showModal}/>}
+      {
+        editState.product &&
+        <ProductEditModal errors={editState.errorMessage}
+                          product={editState.product}
+                          onEdit={(updatedProduct, productId) => {
+                            dispatch(editProduct({
+                              product: updatedProduct,
+                              productId: productId,
+                            }))
+                          }}
+                          onClose={() => dispatch(closeProductEditModal())}
+        />
+      }
+      {
+        addState.showModal &&
+        <ProductAddModal errors={addState.errorMessage}
+                         onAdd={(product) => dispatch(addProduct(product))}
+                         onClose={() => dispatch(closeProductAddModal())}
+                         show={addState.showModal}/>
+      }
     </Container>
   );
 }

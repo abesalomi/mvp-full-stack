@@ -12,7 +12,7 @@ const ProductCard = ({product, onEdit, onDelete}: Props) => {
 
   return (
     <Card>
-      <Card.Img variant="top" src="https://via.placeholder.com/400x200"/>
+      <Card.Img variant="top" src={`https://via.placeholder.com/400x200/88D498?text=${product.productName}`}/>
       <Card.Body>
         <Card.Title>{product.productName}</Card.Title>
         <Card.Text>

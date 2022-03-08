@@ -5,9 +5,10 @@ interface Props {
   onConfirm: () => void;
   onClose: () => void;
   show?: boolean;
+  closeOnOk?: boolean;
 }
 
-const Confirm = ({children, onClose, onConfirm, show}: Props) => {
+const Confirm = ({children, onClose, onConfirm, show, closeOnOk = true}: Props) => {
 
   const handleClose = () => {
     onClose()
@@ -15,7 +16,9 @@ const Confirm = ({children, onClose, onConfirm, show}: Props) => {
 
   const handleOk = () => {
     onConfirm();
-    onClose();
+    if(closeOnOk) {
+      onClose();
+    }
   }
 
   return (

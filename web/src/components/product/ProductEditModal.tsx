@@ -30,8 +30,8 @@ const ProductEditModal = ({onClose, onEdit, product, errors}: Props) => {
 
     onEdit({
       productName: data.productName,
-      cost: data.cost,
-      amountAvailable: data.amountAvailable,
+      cost: parseInt(data.cost?.toString()),
+      amountAvailable: parseInt(data.amountAvailable?.toString()),
     }, product.id);
   }
 
