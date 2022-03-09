@@ -9,7 +9,7 @@ import { AppModule } from '../../src/app.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from '../../src/auth/auth.service';
 import { JwtAuthGuard } from '../../src/auth/guards/jwt-auth.guard';
-import { getManager } from 'typeorm';
+import { getConnection, getManager } from 'typeorm';
 import { faker } from '@faker-js/faker';
 
 const salt = bcrypt.genSaltSync(10);
@@ -55,6 +55,8 @@ describe('MachineController', () => {
 
   beforeEach(async () => {
 
+    await getConnection().synchronize();
+
     user = await getManager().save(User, {
       username: faker.internet.userName(),
       password: await bcrypt.hash(faker.internet.password(), salt),
@@ -63,7 +65,7 @@ describe('MachineController', () => {
   })
 
   afterEach( async () => {
-    await getManager().delete(User, user);
+    await getConnection().dropDatabase();
   })
 
   afterAll(() => {

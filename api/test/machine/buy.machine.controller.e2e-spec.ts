@@ -9,7 +9,7 @@ import { AppModule } from '../../src/app.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from '../../src/auth/auth.service';
 import { JwtAuthGuard } from '../../src/auth/guards/jwt-auth.guard';
-import { getManager } from 'typeorm';
+import { getConnection, getManager } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { Product } from '../../src/product/product.entity';
 
@@ -63,6 +63,9 @@ describe('MachineController', () => {
   });
 
   beforeEach(async () => {
+
+    await getConnection().synchronize();
+
     user = await getManager().save(User, {
       username: faker.internet.userName(),
       password: await bcrypt.hash(faker.internet.password(), salt),
@@ -99,8 +102,7 @@ describe('MachineController', () => {
   })
 
   afterEach( async () => {
-    await getManager().delete(Product, Object.values(products));
-    await getManager().delete(User, [user, seller]);
+    await getConnection().dropDatabase();
   })
 
   afterAll(() => {

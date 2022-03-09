@@ -25,9 +25,9 @@ describe('MachineController', () => {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
-          envFilePath: ['.env.test']
+          envFilePath: ['.env.test'],
         }),
-        AppModule
+        AppModule,
       ],
     })
       .overrideGuard(JwtAuthGuard)
@@ -54,8 +54,6 @@ describe('MachineController', () => {
   });
 
   beforeEach(async () => {
-
-
     await getConnection().synchronize();
 
     user = await getManager().save(User, {
@@ -65,7 +63,7 @@ describe('MachineController', () => {
     });
   })
 
-  afterEach( async () => {
+  afterEach(async () => {
     await getConnection().dropDatabase();
   })
 
@@ -74,30 +72,77 @@ describe('MachineController', () => {
   })
 
 
-
-  it('should deposit', async function () {
+  it('Should create user', async function () {
 
     const response = await request(app.getHttpServer())
-      .post('/machine/deposit')
+      .post('/users')
       .send({
-        deposit: 100,
+        username: faker.internet.userName(),
+        password: await bcrypt.hash(faker.internet.password(), salt),
+        roles: [Role.BUYER],
       });
 
-    const _user = await getManager().findOne(User, user.id);
 
-    expect(response.status).toEqual(HttpStatus.OK);
-    expect(_user.deposit).toEqual(100);
+    const user = await getManager().findOne(User, response.body.id);
 
+    expect(response.status).toEqual(HttpStatus.CREATED);
+    expect(user).not.toBeFalsy();
   });
 
-  it('Illegal deposit should be ', async function () {
+
+  it('Should fail weak password', async function () {
+
     const response = await request(app.getHttpServer())
-      .post('/machine/deposit')
+      .post('/users')
       .send({
-        deposit: 101,
+        username: faker.internet.userName(),
+        password: 'easy',
+        roles: [Role.BUYER],
       });
 
     expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
   });
+
+  it('Should update', async function () {
+
+    const newUsername = faker.internet.userName();
+
+    const response = await request(app.getHttpServer())
+      .patch(`/users`)
+      .send({
+        username: newUsername,
+      });
+
+
+    const _user = await getManager().findOne(User, response.body.id);
+
+    expect(response.status).toEqual(HttpStatus.OK);
+    expect(_user.username).toEqual(newUsername);
+  });
+
+
+  it('Should delete', async function () {
+
+
+    const response = await request(app.getHttpServer())
+      .delete(`/users/${user.id}`);
+
+
+    const _user = await getManager().findOne(User, response.body.id);
+
+    expect(response.status).toEqual(HttpStatus.OK);
+    expect(_user).toBeFalsy();
+  });
+
+
+  it('Could not delete other.', async function () {
+
+
+    const response = await request(app.getHttpServer())
+      .delete(`/users/${user.id + 1}`);
+
+    expect(response.status).toEqual(HttpStatus.FORBIDDEN);
+  });
+
 
 });
